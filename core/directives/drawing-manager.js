@@ -1,5 +1,6 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
 import { DrawingManagerManager } from '../services/managers/drawing-manager-manager';
+var drawingManagerId = 0;
 /**
  * AgmDrawingManager renders a map drawing manager inside a {@link AgmMap}.
  *
@@ -58,6 +59,7 @@ var AgmDrawingManager = (function () {
         this.rectangleComplete = new EventEmitter();
         this._drawingManagerAddedToManager = false;
         this._observableSubscriptions = [];
+        this._id = (drawingManagerId++).toString();
     }
     /** @internal */
     AgmDrawingManager.prototype.ngOnChanges = function (changes) {
@@ -94,37 +96,41 @@ var AgmDrawingManager = (function () {
     };
     AgmDrawingManager.prototype._addEventListeners = function () {
         var _this = this;
-        var overlayComplete = this._drawingManagerManager.createEventObservable('overlaycomplete')
+        var overlayComplete = this._drawingManagerManager.createEventObservable('overlaycomplete', this)
             .subscribe(function (e) {
             _this.overlayComplete.emit(e);
         });
         this._observableSubscriptions.push(overlayComplete);
-        var circleComplete = this._drawingManagerManager.createEventObservable('circlecomplete')
+        var circleComplete = this._drawingManagerManager.createEventObservable('circlecomplete', this)
             .subscribe(function (e) {
             _this.circleComplete.emit(e);
         });
         this._observableSubscriptions.push(circleComplete);
-        var markerComplete = this._drawingManagerManager.createEventObservable('markercomplete')
+        var markerComplete = this._drawingManagerManager.createEventObservable('markercomplete', this)
             .subscribe(function (e) {
             _this.markerComplete.emit(e);
         });
         this._observableSubscriptions.push(markerComplete);
-        var polylineComplete = this._drawingManagerManager.createEventObservable('polylinecomplete')
+        var polylineComplete = this._drawingManagerManager.createEventObservable('polylinecomplete', this)
             .subscribe(function (e) {
             _this.polylineComplete.emit(e);
         });
         this._observableSubscriptions.push(polylineComplete);
-        var polygonComplete = this._drawingManagerManager.createEventObservable('polygoncomplete')
+        var polygonComplete = this._drawingManagerManager.createEventObservable('polygoncomplete', this)
             .subscribe(function (e) {
             _this.polygonComplete.emit(e);
         });
         this._observableSubscriptions.push(polygonComplete);
-        var rectangleComplete = this._drawingManagerManager.createEventObservable('rectanglecomplete')
+        var rectangleComplete = this._drawingManagerManager.createEventObservable('rectanglecomplete', this)
             .subscribe(function (e) {
             _this.rectangleComplete.emit(e);
         });
         this._observableSubscriptions.push(rectangleComplete);
     };
+    /** @internal */
+    AgmDrawingManager.prototype.id = function () { return this._id; };
+    /** @internal */
+    AgmDrawingManager.prototype.toString = function () { return 'AgmDrawingManager-' + this._id.toString(); };
     /** @internal */
     AgmDrawingManager.prototype.ngOnDestroy = function () {
         this._drawingManagerManager.deleteDrawingManager(this);

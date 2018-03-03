@@ -6,7 +6,7 @@ import { DrawingManager } from './../google-maps-types';
 export declare class DrawingManagerManager {
     protected _mapsWrapper: GoogleMapsAPIWrapper;
     protected _zone: NgZone;
-    protected _drawingManager: Promise<DrawingManager>;
+    protected _drawingManagers: Map<AgmDrawingManager, Promise<DrawingManager>>;
     constructor(_mapsWrapper: GoogleMapsAPIWrapper, _zone: NgZone);
     addDrawingManager(drawingManager: AgmDrawingManager): void;
     deleteDrawingManager(drawingManager: AgmDrawingManager): Promise<void>;
@@ -18,5 +18,5 @@ export declare class DrawingManagerManager {
     updatePolylineOptions(drawingManager: AgmDrawingManager): Promise<void>;
     updatePolygonOptions(drawingManager: AgmDrawingManager): Promise<void>;
     updateRectangleOptions(drawingManager: AgmDrawingManager): Promise<void>;
-    createEventObservable<T>(eventName: string): Observable<T>;
+    createEventObservable<T>(eventName: string, drawingManager: AgmDrawingManager): Observable<T>;
 }

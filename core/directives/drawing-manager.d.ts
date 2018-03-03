@@ -89,6 +89,7 @@ export declare class AgmDrawingManager implements OnDestroy, OnChanges {
      */
     rectangleComplete: EventEmitter<mapTypes.Rectangle>;
     private _drawingManagerAddedToManager;
+    private _id;
     private _observableSubscriptions;
     constructor(_drawingManagerManager: DrawingManagerManager);
     /** @internal */
@@ -96,6 +97,10 @@ export declare class AgmDrawingManager implements OnDestroy, OnChanges {
         [key: string]: SimpleChange;
     }): void;
     private _addEventListeners();
+    /** @internal */
+    id(): string;
+    /** @internal */
+    toString(): string;
     /** @internal */
     ngOnDestroy(): void;
 }
